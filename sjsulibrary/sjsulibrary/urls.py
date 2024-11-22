@@ -24,7 +24,6 @@ urlpatterns = [
     path('register/', views.register_user, name='register'),
     path('login/', views.login_user, name='login'),
     path('manage-inventory/', views.manage_inventory, name='manage_inventory'),
-    path('depovision/<uuid:user_id>', views.deprovision_user, name='deprovision_user'),
     path('assign-role/', views.assign_role, name='assign_role'),
     path('home', views.home, name='home'),
     path('', views.home, name='home'),
@@ -32,4 +31,5 @@ urlpatterns = [
     path('university-resources/', views.university_resources, name='university_resources'),
     path('place-hold/', views.place_hold, name='place_hold'),
     path('public-resources/', views.public_resources, name='public_resources'),
+    path('delete-user/', views.delete_user, name='delete_user'),
 ]

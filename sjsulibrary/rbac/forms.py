@@ -45,3 +45,6 @@ class AssignRoleForm(forms.Form):
         role = self.cleaned_data['role']
         user.roles.add(role)
         user.save()
+
+class DeleteUserForm(forms.Form):
+    user = forms.ModelChoiceField(queryset=RBACUser.objects.all(), label="Select a user to delete")

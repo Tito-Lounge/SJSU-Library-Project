@@ -7,7 +7,7 @@ from .forms import UserRegistrationForm
 from django.contrib.auth import logout
 
 # Provisioning/deprovisioning
-from .forms import AssignRoleForm, DeleteUserForm
+from .forms import AssignRoleForm, DeleteUserForm, ProvisionForm
 from django.shortcuts import redirect, get_object_or_404
 from .models import RBACUser
 from django.shortcuts import get_object_or_404
@@ -77,7 +77,7 @@ def assign_role(request):
 
 @roles_required('Admin')
 def delete_user(request):
-    # Ensure the user has the 'Admin' role
+    # Ensure the user has Admin role
     if not request.user.is_authenticated or not request.user.roles.filter(role_name='Admin').exists():
         return HttpResponseForbidden("You do not have access to this page.")
     
@@ -92,3 +92,21 @@ def delete_user(request):
         form = DeleteUserForm()
 
     return render(request, 'delete_user.html', {'form': form})
+
+@roles_required('Admin')
+def user_list(request):
+    users = RBACUser.objects.all() # Fetch all RBACUsers
+    return render(request, 'user_list.html', {'users': users})
+
+@roles_required('Admin')
+def provision_user(request):
+    if request.method == 'POST':
+        form = ProvisionForm(request.POST)
+        if form.is_valid():
+            user = form.save()  # Save the user and assign roles
+            messages.success(request, f"User {user.username} has been created with the assigned roles.")
+            return redirect('home')  # Redirect to home or another page after success
+    else:
+        form = ProvisionForm()
+
+    return render(request, 'provision_user.html', {'form': form})

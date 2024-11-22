@@ -48,3 +48,37 @@ class AssignRoleForm(forms.Form):
 
 class DeleteUserForm(forms.Form):
     user = forms.ModelChoiceField(queryset=RBACUser.objects.all(), label="Select a user to delete")
+
+class ProvisionForm(forms.ModelForm):
+    password1 = forms.CharField(widget=forms.PasswordInput, label='Password')
+    password2 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password')
+    roles = forms.ModelMultipleChoiceField(
+        queryset=Role.objects.all(),  # All available roles
+        widget=forms.CheckboxSelectMultiple,  # Display roles as checkboxes
+        required=True,
+        label="Assign Roles"
+    )
+
+    class Meta:
+        model = RBACUser
+        fields = ['username', 'email']  # Admin provides username and email
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("The two password fields must match.")
+        return password2
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password1'])  # Set the user's password
+        if commit:
+            user.save()
+
+        # Assign roles to the user
+        roles = self.cleaned_data['roles']
+        user.roles.set(roles)  # Set the roles using the ManyToManyField
+
+        return user

@@ -32,4 +32,6 @@ urlpatterns = [
     path('place-hold/', views.place_hold, name='place_hold'),
     path('public-resources/', views.public_resources, name='public_resources'),
     path('delete-user/', views.delete_user, name='delete_user'),
+    path('user-list/', views.user_list, name='user_list'),
+    path('provision-user/', views.provision_user, name='provision_user'),
 ]

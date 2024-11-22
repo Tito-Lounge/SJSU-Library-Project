@@ -34,6 +34,9 @@
         <h3>Administrative Activities</h3>
         <a href="{% url 'manage_inventory' %}" class="btn">Manage Inventory</a>
         <a href="{% url 'assign_role' %}" class="btn">Assign Role</a>
+        <a href="{% url 'provision_user' %}" class="btn">Provision User</a>
+        <a href="{% url 'delete_user' %}" class="btn">Delete User</a>
+        <a href="{% url 'user_list' %}" class="btn">User List</a>
        
     {% else %}
         <p>Please <a href="{% url 'login' %}">log in</a> to access more features or <a href="{% url 'register' %}"> register</a> for an account.</p>

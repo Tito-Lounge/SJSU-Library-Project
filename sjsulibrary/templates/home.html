@@ -1,0 +1,42 @@
+{% extends "landing_page.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if user.is_authenticated %}
+        <!-- Log Out Form -->
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Log Out</button>
+        </form>
+        
+        <!-- Welcome Message -->
+        <p>Welcome back, {{ user.username }}. Your account has: 
+            {% if user.roles.all %}
+                {% for role in user.roles.all %}
+                    {{ role.role_name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            {% else %}
+                None
+            {% endif %}
+            level(s) of access.
+        </p>
+
+        <!-- Redirect Buttons -->
+        <h3>Library Resources</h3>
+        <a href="{% url 'public_resources' %}" class="btn">Public Resources</a>
+        <a href="{% url 'university_resources' %}" class="btn">University Resources</a>
+        
+        <h3>Faculty Actions</h3>
+        <a href="{% url 'place_hold' %}" class="btn">Place Hold</a>
+
+        <h3>Administrative Activities</h3>
+        <a href="{% url 'manage_inventory' %}" class="btn">Manage Inventory</a>
+        <a href="{% url 'assign_role' %}" class="btn">Assign Role</a>
+       
+    {% else %}
+        <p>Please <a href="{% url 'login' %}">log in</a> to access more features or <a href="{% url 'register' %}"> register</a> for an account.</p>
+    {% endif %}
+</div>
+{% endblock %}

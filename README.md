@@ -1,2 +1,6 @@
 # SJSU Library Project
- CMPE-132 project designed to learn RBAC model, user provisioning and authentication
+Project for CMPE-132 designed to learn RBAC development techniques. Implemented using Python and Django.
+
+### Libraries
+venv
+django

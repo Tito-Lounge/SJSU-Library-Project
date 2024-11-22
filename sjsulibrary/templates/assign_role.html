@@ -1,0 +1,6 @@
+<h1>Assign Role to User</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}  <!-- Render the form fields -->
+    <button type="submit">Assign Role</button>
+</form>
